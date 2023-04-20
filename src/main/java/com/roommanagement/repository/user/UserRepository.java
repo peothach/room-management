@@ -1,4 +1,4 @@
-package com.roommanagement.repository;
+package com.roommanagement.repository.user;
 
 import java.util.Optional;
 

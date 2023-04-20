@@ -1,7 +1,7 @@
 package com.roommanagement.security.services;
 
 import com.roommanagement.entity.User;
-import com.roommanagement.repository.UserRepository;
+import com.roommanagement.repository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
