@@ -1,6 +1,7 @@
 package com.roommanagement.controllers.room;
 
 import com.roommanagement.dto.request.room.CreateRoomRequestDto;
+import com.roommanagement.dto.response.BaseResponseDto;
 import com.roommanagement.service.room.CommandRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -15,26 +16,26 @@ public class RoomCommandController {
   private final CommandRoomService commandRoomService;
 
   @PostMapping("/rooms")
-  public ResponseEntity<Void> createRoom(@RequestBody CreateRoomRequestDto roomRequestDto, @RequestHeader(value = "quantity") int quantity) {
+  public ResponseEntity<BaseResponseDto<?>> createRoom(@RequestBody CreateRoomRequestDto roomRequestDto, @RequestHeader(value = "quantity") int quantity) {
     commandRoomService.createRoom(roomRequestDto, quantity);
-    return ResponseEntity
-        .status(HttpStatus.CREATED)
-        .build();
+    return ResponseEntity.ok(
+        new BaseResponseDto<>(HttpStatus.CREATED.value(), HttpStatus.CREATED.getReasonPhrase())
+    );
   }
 
   @PatchMapping("/rooms/{id}")
-  public ResponseEntity<Void> updateRoom(@RequestBody CreateRoomRequestDto roomRequestDto, @PathVariable("id") long roomId) {
+  public ResponseEntity<BaseResponseDto<?>> updateRoom(@RequestBody CreateRoomRequestDto roomRequestDto, @PathVariable("id") long roomId) {
     commandRoomService.updateRoom(roomRequestDto, roomId);
-    return ResponseEntity
-        .status(HttpStatus.NO_CONTENT)
-        .build();
+    return ResponseEntity.ok(
+        new BaseResponseDto<>(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase())
+    );
   }
 
   @DeleteMapping("/rooms/{id}")
-  public ResponseEntity<Void> deleteRoom(@PathVariable("id") long id) {
+  public ResponseEntity<BaseResponseDto<?>> deleteRoom(@PathVariable("id") long id) {
     commandRoomService.deleteRoom(id);
-    return ResponseEntity
-        .status(HttpStatus.NO_CONTENT)
-        .build();
+    return ResponseEntity.ok(
+        new BaseResponseDto<>(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase())
+    );
   }
 }

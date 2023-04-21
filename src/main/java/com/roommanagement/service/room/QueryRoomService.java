@@ -1,14 +1,15 @@
 package com.roommanagement.service.room;
 
+import com.roommanagement.dto.response.BaseResponseDto;
 import com.roommanagement.dto.response.room.RoomResponse;
 import com.roommanagement.dto.response.room.SummaryRoomByStatusResponse;
 
 import java.util.List;
 
 public interface QueryRoomService {
-  SummaryRoomByStatusResponse getTotalRoomByStatus();
+  BaseResponseDto<SummaryRoomByStatusResponse> getTotalRoomByStatus();
 
-  List<RoomResponse> getRooms();
+  BaseResponseDto<List<RoomResponse>> getRooms();
 
-  List<RoomResponse> getRooms(String status);
+  BaseResponseDto<List<RoomResponse>> getRooms(String status);
 }

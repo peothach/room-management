@@ -1,5 +1,6 @@
 package com.roommanagement.controllers.room;
 
+import com.roommanagement.dto.response.BaseResponseDto;
 import com.roommanagement.dto.response.room.RoomResponse;
 import com.roommanagement.dto.response.room.SummaryRoomByStatusResponse;
 import com.roommanagement.service.room.QueryRoomService;
@@ -22,13 +23,13 @@ public class RoomQueryController {
 
   @GetMapping("/rooms/summary-room")
   @PreAuthorize("hasRole('ADMIN')")
-  public ResponseEntity<SummaryRoomByStatusResponse> getSummaryRoom() {
+  public ResponseEntity<BaseResponseDto<SummaryRoomByStatusResponse>> getSummaryRoom() {
     return ResponseEntity.ok(queryService.getTotalRoomByStatus());
   }
 
   @GetMapping("/rooms")
   @PreAuthorize("hasRole('ADMIN')")
-  public ResponseEntity<List<RoomResponse>> getRooms(@RequestParam(value = "status", required = false) Optional<String> roomStatus) {
+  public ResponseEntity<BaseResponseDto<List<RoomResponse>>> getRooms(@RequestParam(value = "status", required = false) Optional<String> roomStatus) {
     return roomStatus
         .map(status -> ResponseEntity.ok(queryService.getRooms(status)))
         .orElseGet(() -> ResponseEntity.ok(queryService.getRooms()));
