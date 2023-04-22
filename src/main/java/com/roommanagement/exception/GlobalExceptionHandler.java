@@ -15,48 +15,43 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(value = Exception.class)
   public ResponseEntity<BaseResponseDto<?>> handleInternalException(Exception ex, WebRequest request) {
-    return ResponseEntity.ok(
-        new BaseResponseDto<>(HttpStatus.INTERNAL_SERVER_ERROR.value(),HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
-    );
+    return ResponseEntity
+        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(new BaseResponseDto<>(HttpStatus.INTERNAL_SERVER_ERROR.value(),HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));
   }
 
   @ExceptionHandler(value = TokenRefreshException.class)
-  @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<BaseResponseDto<?>> handleTokenRefreshException(TokenRefreshException ex, WebRequest request) {
-    return ResponseEntity.ok(
-        new BaseResponseDto<>(HttpStatus.FORBIDDEN.value(), ex.getLocalizedMessage())
-    );
+    return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(new BaseResponseDto<>(HttpStatus.BAD_REQUEST.value(),HttpStatus.BAD_REQUEST.getReasonPhrase()));
   }
 
   @ExceptionHandler(value = ExistingUsernameException.class)
-  @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<BaseResponseDto<?>> handleExistingUsernameException(ExistingUsernameException ex, WebRequest request) {
-    return ResponseEntity.ok(
-        new BaseResponseDto<>(HttpStatus.BAD_REQUEST.value(), ex.getLocalizedMessage())
-    );
+    return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(new BaseResponseDto<>(HttpStatus.BAD_REQUEST.value(), ex.getLocalizedMessage()));
   }
 
   @ExceptionHandler(value = ExistingEmailException.class)
-  @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<BaseResponseDto<?>> handleExistingEmailException(ExistingEmailException ex, WebRequest request) {
-    return ResponseEntity.ok(
-        new BaseResponseDto<>(HttpStatus.BAD_REQUEST.value(), ex.getLocalizedMessage())
-    );
+    return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(new BaseResponseDto<>(HttpStatus.BAD_REQUEST.value(), ex.getLocalizedMessage()));
   }
 
   @ExceptionHandler(value = RoleNotFoundException.class)
-  @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<BaseResponseDto<?>> handleRoleNotFoundException(RoleNotFoundException ex, WebRequest request) {
-    return ResponseEntity.ok(
-        new BaseResponseDto<>(HttpStatus.BAD_REQUEST.value(), ex.getLocalizedMessage())
-    );
+    return ResponseEntity
+        .status(HttpStatus.BAD_REQUEST)
+        .body(new BaseResponseDto<>(HttpStatus.BAD_REQUEST.value(), ex.getLocalizedMessage()));
   }
 
   @ExceptionHandler(value = BadCredentialsException.class)
-  @ResponseStatus(HttpStatus.OK)
   public ResponseEntity<BaseResponseDto<?>> handleBadCredentialsException(BadCredentialsException ex, WebRequest request) {
-    return ResponseEntity.ok(
-        new BaseResponseDto<>(HttpStatus.BAD_REQUEST.value(), ex.getLocalizedMessage())
-    );
+    return ResponseEntity
+        .status(HttpStatus.UNAUTHORIZED)
+        .body(new BaseResponseDto<>(HttpStatus.UNAUTHORIZED.value(), ex.getLocalizedMessage()));
   }
 }
