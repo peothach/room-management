@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/test")
 public class TestController {
 	@GetMapping("/all")
-	public String allAccess() {
+	public String allAccess() throws InterruptedException {
+		Thread.sleep(2000);
 		return "Public Content.";
 	}
 

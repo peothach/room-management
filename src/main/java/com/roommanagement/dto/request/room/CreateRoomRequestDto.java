@@ -5,4 +5,5 @@ import lombok.Data;
 @Data
 public class CreateRoomRequestDto {
   private String name;
+  private String status;
 }
