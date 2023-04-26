@@ -132,6 +132,8 @@ public class CommandExpenseServiceImpl implements CommandExpenseService {
         roomExpense.setOverridePriceFlag(false);
 
         roomExpenses.add(roomExpense);
+        roomExpenseRepository.saveAll(roomExpenses);
+
       });
     } else {
       // Add all selected room
@@ -149,21 +151,24 @@ public class CommandExpenseServiceImpl implements CommandExpenseService {
         roomExpense.setOverridePriceFlag(false);
         roomExpenses.add(roomExpense);
       });
-    }
 
-    roomExpenseRepository.saveAll(roomExpenses);
+      roomExpenseRepository.saveAll(roomExpenses);
 
-    // Delete room record in room_expense when user un-select existing record
-    List<RoomExpense> roomExpensesNeedRemove = roomExpenseRepository.findAllByExpenseId(expenseId);
-    List<Long> roomsForUpdate =  updateRequest.getRoomIds();
-    for (int i = 0; i < roomExpensesNeedRemove.size(); i++) {
-      for (int j = 0; j < roomsForUpdate.size(); j++) {
-        if (Objects.equals(roomExpensesNeedRemove.get(i).getRoom().getId(), roomsForUpdate.get(j))) {
-          roomExpensesNeedRemove.remove(i);
+
+      // Delete room record in room_expense when user un-select existing record
+      List<RoomExpense> roomExpensesNeedRemove = roomExpenseRepository.findAllByExpenseId(expenseId);
+      List<Long> roomsForUpdate =  updateRequest.getRoomIds();
+      for (int i = 0; i < roomExpensesNeedRemove.size(); i++) {
+        for (int j = 0; j < roomsForUpdate.size(); j++) {
+          if (Objects.equals(roomExpensesNeedRemove.get(i).getRoom().getId(), roomsForUpdate.get(j))) {
+            roomExpensesNeedRemove.remove(i);
+          }
         }
       }
+      roomExpenseRepository.deleteAll(roomExpensesNeedRemove);
     }
-    roomExpenseRepository.deleteAll(roomExpensesNeedRemove);
+
+//    roomExpenseRepository.saveAll(roomExpenses);
 
     return new BaseResponseDto<>(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase());
   }
