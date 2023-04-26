@@ -64,7 +64,7 @@ public class CommandExpenseServiceImpl implements CommandExpenseService {
 
     if (createRequest.isApplyAllRooms()) {
       // Add all room for expense when select apply for all
-      List<Room> rooms = roomRepository.findAllByStatusIsNot(RoomStatus.Inactive);
+      List<Room> rooms = roomRepository.findAllByStatusIsNotAndUserId(RoomStatus.Inactive, user.getId());
       rooms.forEach(room -> {
         RoomExpense roomExpense = new RoomExpense();
         roomExpense.setRoom(room);
@@ -117,7 +117,7 @@ public class CommandExpenseServiceImpl implements CommandExpenseService {
 
     if (updateRequest.isApplyAllRooms()) {
       // Add all room for expense when select apply for all
-      List<Room> rooms = roomRepository.findAllByStatusIsNot(RoomStatus.Inactive);
+      List<Room> rooms = roomRepository.findAllByStatusIsNotAndUserId(RoomStatus.Inactive, user.getId());
       rooms.forEach(room -> {
         RoomExpense roomExpense = new RoomExpense();
         // Check if record is existing in DB
