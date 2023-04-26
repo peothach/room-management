@@ -57,4 +57,31 @@ public class QueryExpenseServiceImpl implements QueryExpenseService {
 
     return new BaseResponseDto(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), expenses);
   }
+
+  @Override
+  public BaseResponseDto<?> retrieveParticularExpense(Integer expenseId) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    List<QueryExpenseResponse.QueryExpense> queryExpenses = query.retrieveParticularExpense(userDetails.getId(), expenseId);
+
+    QueryExpenseResponse expense = new QueryExpenseResponse();
+    expense.setId(queryExpenses.get(0).getExpenseId());
+    expense.setName(queryExpenses.get(0).getExpenseName());
+    expense.setPrice(queryExpenses.get(0).getPrice());
+    expense.setUnitPriceFlag(queryExpenses.get(0).isUnitPriceFlag());
+    expense.setUnit(queryExpenses.get(0).getUnit());
+    expense.setApplyAll(queryExpenses.get(0).isApplyAll());
+
+    List<QueryExpenseResponse.Room> rooms = new ArrayList<>();
+    queryExpenses.forEach(i -> {
+      QueryExpenseResponse.Room room = new QueryExpenseResponse.Room();
+      room.setId(i.getRoomId());
+      room.setName(i.getRoomName());
+
+      rooms.add(room);
+    });
+
+    expense.setRooms(rooms);
+    return new BaseResponseDto(HttpStatus.OK.value(), HttpStatus.OK.getReasonPhrase(), expense);
+  }
 }

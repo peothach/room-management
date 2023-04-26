@@ -5,6 +5,7 @@ import com.roommanagement.service.expense.QueryExpenseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,5 +18,10 @@ public class QueryExpenseController {
   @GetMapping("expenses")
   public ResponseEntity<BaseResponseDto<?>> retrieveExpenses() {
     return ResponseEntity.ok(queryExpenseService.retrieveExpenses());
+  }
+
+  @GetMapping("expenses/{id}")
+  public ResponseEntity<BaseResponseDto<?>> retrieveParticularExpense(@PathVariable("id") Integer id) {
+    return ResponseEntity.ok(queryExpenseService.retrieveParticularExpense(id));
   }
 }

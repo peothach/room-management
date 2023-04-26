@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface QueryExpenseService {
   BaseResponseDto<List<QueryExpenseResponse>> retrieveExpenses();
+  BaseResponseDto<?> retrieveParticularExpense(Integer expenseId);
 }
