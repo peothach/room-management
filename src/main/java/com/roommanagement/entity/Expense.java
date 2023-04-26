@@ -19,6 +19,8 @@ public class Expense {
   private Boolean  unitPriceFlag;
   @Column
   private Double price;
+  @Column
+  private Boolean applyAllFlag;
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "unit_price_id")
   private UnitPrice unitPrice;

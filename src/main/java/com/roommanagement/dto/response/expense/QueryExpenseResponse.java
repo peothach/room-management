@@ -12,6 +12,7 @@ public class QueryExpenseResponse {
   private boolean unitPriceFlag;
   private String unit;
   private List<Room> rooms;
+  private boolean isApplyAll;
 
   @Data
   public static class Room {
@@ -28,6 +29,7 @@ public class QueryExpenseResponse {
     private String unit;
     private Integer roomId;
     private String roomName;
+    private boolean isApplyAll;
   }
 
 }

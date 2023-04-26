@@ -14,6 +14,7 @@ import com.roommanagement.repository.unitprice.UnitPriceRepository;
 import com.roommanagement.repository.user.UserRepository;
 import com.roommanagement.security.services.UserDetailsImpl;
 import com.roommanagement.util.UserUtils;
+import com.roommanagement.valueoject.RoomStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -49,17 +50,21 @@ public class CommandExpenseServiceImpl implements CommandExpenseService {
     expense.setName(createRequest.getName());
     expense.setPrice(paymentMethod.getPrice());
     expense.setUnitPriceFlag(false);
+    expense.setApplyAllFlag(false);
     expense.setUser(user);
     if (paymentMethod.getIsUnitPrice()) {
       expense.setUnitPriceFlag(paymentMethod.getIsUnitPrice());
       expense.setUnitPrice(unitPriceRepository.findById(paymentMethod.getUnitPriceId()).get());
+    }
+    if (createRequest.isApplyAllRooms()) {
+      expense.setApplyAllFlag(true);
     }
 
     Expense expensePersisted = expenseRepository.saveAndFlush(expense);
 
     if (createRequest.isApplyAllRooms()) {
       // Add all room for expense when select apply for all
-      List<Room> rooms = roomRepository.findAll();
+      List<Room> rooms = roomRepository.findAllByStatusIsNot(RoomStatus.Inactive);
       rooms.forEach(room -> {
         RoomExpense roomExpense = new RoomExpense();
         roomExpense.setRoom(room);
@@ -100,15 +105,19 @@ public class CommandExpenseServiceImpl implements CommandExpenseService {
     expense.setPrice(paymentMethod.getPrice());
     expense.setUnitPriceFlag(false);
     expense.setUser(user);
+    expense.setApplyAllFlag(false);
     if (paymentMethod.getIsUnitPrice()) {
       expense.setUnitPriceFlag(true);
       expense.setUnitPrice(unitPriceRepository.findById(paymentMethod.getUnitPriceId()).get());
+    }
+    if (updateRequest.isApplyAllRooms()) {
+      expense.setApplyAllFlag(true);
     }
     Expense expensePersisted = expenseRepository.saveAndFlush(expense);
 
     if (updateRequest.isApplyAllRooms()) {
       // Add all room for expense when select apply for all
-      List<Room> rooms = roomRepository.findAll();
+      List<Room> rooms = roomRepository.findAllByStatusIsNot(RoomStatus.Inactive);
       rooms.forEach(room -> {
         RoomExpense roomExpense = new RoomExpense();
         // Check if record is existing in DB

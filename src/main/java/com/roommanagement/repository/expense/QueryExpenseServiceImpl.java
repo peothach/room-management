@@ -50,6 +50,7 @@ public class QueryExpenseServiceImpl implements QueryExpenseService {
       queryExpenseResponse.setUnitPriceFlag(queryExpense.isUnitPriceFlag());
       queryExpenseResponse.setUnit(queryExpense.getUnit());
       queryExpenseResponse.setRooms(rooms);
+      queryExpenseResponse.setApplyAll(queryExpense.isApplyAll());
 
       expenses.add(queryExpenseResponse);
     });
