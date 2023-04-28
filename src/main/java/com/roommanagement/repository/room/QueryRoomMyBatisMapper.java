@@ -38,7 +38,9 @@ public interface QueryRoomMyBatisMapper {
       "      JOIN room r ON r.id = re.room_id \n" +
       "      LEFT JOIN unit_price u ON u.unit_price_id = e.unit_price_id \n" +
       "      JOIN users on users.id = e.user_id" +
-      "      WHERE users.id = #{userId} AND r.id = #{roomId}")
+      "      WHERE users.id = #{userId}\n" +
+      "      AND r.id = #{roomId}\n" +
+      "      AND r.status <> 'Phòng đã xóa'")
   @Results(id = "expensesResultMap", value = {
       @Result(property = "id", column = "expense_id"),
       @Result(property = "name", column = "expense_name"),

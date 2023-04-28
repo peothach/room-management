@@ -5,8 +5,9 @@ import com.roommanagement.entity.RoomExpense;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface RoomExpenseRepository extends JpaRepository<RoomExpense, Integer> {
   List<RoomExpense> findAllByExpenseId(Integer expenseId);
-  List<RoomExpense> findAllByRoomId(Long roomId);
+  Optional<RoomExpense> findByRoomIdAndExpenseId(Long roomId, Integer expenseId);
 }

@@ -21,7 +21,8 @@ public interface QueryExpenseMyBatisMapper {
       "LEFT JOIN unit_price u ON u.unit_price_id = e.unit_price_id\n" +
       "JOIN users on users.id = e.user_id\n" +
       "WHERE users.id = #{userId}\n" +
-      "AND r.status <> 'Phòng đã xóa'")
+      "AND r.status <> 'Phòng đã xóa'\n" +
+      "AND re.override_price_flag IS FALSE")
   @Results(id = "expensesResultMap", value = {
       @Result(property = "expenseId", column = "expense_id"),
       @Result(property = "expenseName", column = "expense_name"),

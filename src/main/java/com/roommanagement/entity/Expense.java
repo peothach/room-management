@@ -1,6 +1,9 @@
 package com.roommanagement.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -8,6 +11,9 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "expense")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Expense {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,4 +35,13 @@ public class Expense {
   @ManyToOne
   @JoinColumn(name = "user_id")
   private User user;
+
+  public Expense(String name, Double price, Boolean applyAllFlag, Boolean defaultFlag, Boolean unitPriceFlag, UnitPrice unitPrice) {
+    this.name = name;
+    this.price = price;
+    this.applyAllFlag = applyAllFlag;
+    this.defaultFlag = defaultFlag;
+    this.unitPriceFlag = unitPriceFlag;
+    this.unitPrice = unitPrice;
+  }
 }

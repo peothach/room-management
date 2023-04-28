@@ -1,6 +1,7 @@
 package com.roommanagement.controllers.room;
 
 import com.roommanagement.dto.request.room.CreateRoomRequestDto;
+import com.roommanagement.dto.request.room.UpdateExpenseRequest;
 import com.roommanagement.dto.response.BaseResponseDto;
 import com.roommanagement.service.room.CommandRoomService;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,18 @@ public class RoomCommandController {
   @DeleteMapping("/rooms/{id}")
   public ResponseEntity<BaseResponseDto<?>> deleteRoom(@PathVariable("id") long id) {
     commandRoomService.deleteRoom(id);
+    return ResponseEntity.ok(
+        new BaseResponseDto<>(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase())
+    );
+  }
+
+  @PatchMapping("/rooms/{roomId}/expenses/{expenseId}")
+  public ResponseEntity<BaseResponseDto<?>> updateExpense(
+      @PathVariable("roomId") Long roomId,
+      @PathVariable("expenseId") Integer expenseId,
+      @RequestBody UpdateExpenseRequest updateExpenseRequest
+      ) {
+    commandRoomService.updateExpense(roomId, expenseId, updateExpenseRequest);
     return ResponseEntity.ok(
         new BaseResponseDto<>(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase())
     );

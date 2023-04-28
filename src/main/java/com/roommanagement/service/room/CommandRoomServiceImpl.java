@@ -1,6 +1,7 @@
 package com.roommanagement.service.room;
 
 import com.roommanagement.dto.request.room.CreateRoomRequestDto;
+import com.roommanagement.dto.request.room.UpdateExpenseRequest;
 import com.roommanagement.entity.Expense;
 import com.roommanagement.entity.Room;
 import com.roommanagement.entity.RoomExpense;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 @RequiredArgsConstructor
 @Service
@@ -75,10 +77,6 @@ public class CommandRoomServiceImpl implements CommandRoomService {
 
   @Override
   public void deleteRoom(long roomId) {
-    // Remove record in expense_room table if existing room_id
-    List<RoomExpense> roomExpenses = roomExpenseRepository.findAllByRoomId(roomId);
-    roomExpenses.forEach(this::removeRoomExpenseRecord);
-
     // Change status room in room table
     Room room = roomRepository.findById(roomId).orElseThrow(RuntimeException::new);
     room.setStatus(RoomStatus.Inactive);
@@ -91,6 +89,24 @@ public class CommandRoomServiceImpl implements CommandRoomService {
     Room room = roomRepository.findById(roomId).orElseThrow(RuntimeException::new);
     room.setStatus(RoomStatus.RoomAvailable);
     roomRepository.save(room);
+  }
+
+  @Override
+  public void updateExpense(Long roomId, Integer expenseId, UpdateExpenseRequest updateExpenseRequest) {
+    // Check whether is the same price
+    Expense expense = expenseRepository.findById(expenseId).orElseThrow(RuntimeException::new);
+    if (Objects.equals(expense.getPrice(), updateExpenseRequest.getPrice())) return;
+
+    // When override price, the flag apply all will be set to false in expense table
+    expense.setApplyAllFlag(false);
+    expenseRepository.save(expense);
+
+    // Override new price on room_expense table
+    RoomExpense roomExpense = roomExpenseRepository.findByRoomIdAndExpenseId(roomId, expenseId).orElseThrow(RuntimeException::new);
+    roomExpense.setPrice(updateExpenseRequest.getPrice());
+    roomExpense.setOverridePriceFlag(true);
+    roomExpenseRepository.save(roomExpense);
+
   }
 
   private void removeRoomExpenseRecord(RoomExpense roomExpense) {
