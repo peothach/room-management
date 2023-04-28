@@ -16,10 +16,10 @@ public interface QueryRoomMyBatisMapper {
       "            GROUP BY r.status")
   List<SummaryRoomByStatusResponse.SummaryRoomByStatusQuery> getTotalRoomByStatus(@Param("userId") Long userId);
 
-  @Select("SELECT id, name, status FROM room WHERE user_id = #{userId} and status <> 'Phòng đã xóa'")
+  @Select("SELECT id, name, status FROM room WHERE user_id = #{userId} and status <> 'Phòng đã xóa' ORDER BY id")
   List<RoomResponse> retrieveRooms(@Param("userId") Long userId);
 
-  @Select("SELECT id, name, status FROM room WHERE user_id = #{userId} and status = #{status}")
+  @Select("SELECT id, name, status FROM room WHERE user_id = #{userId} and status = #{status} ORDER BY id")
   List<RoomResponse> retrieveRoomsByStatus(@Param("userId") Long userId, @Param("status") String status);
 
   @Select("SELECT e.expense_id, \n" +

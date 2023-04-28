@@ -50,6 +50,7 @@ public class CommandExpenseServiceImpl implements CommandExpenseService {
     expense.setUnitPriceFlag(false);
     expense.setApplyAllFlag(false);
     expense.setUser(user);
+    expense.setDefaultFlag(false);
     if (paymentMethod.getIsUnitPrice()) {
       expense.setUnitPriceFlag(paymentMethod.getIsUnitPrice());
       expense.setUnitPrice(unitPriceRepository.findById(paymentMethod.getUnitPriceId()).get());
@@ -103,6 +104,7 @@ public class CommandExpenseServiceImpl implements CommandExpenseService {
     expense.setUnitPriceFlag(false);
     expense.setUser(user);
     expense.setApplyAllFlag(false);
+    expense.setDefaultFlag(false);
     if (paymentMethod.getIsUnitPrice()) {
       expense.setUnitPriceFlag(true);
       expense.setUnitPrice(unitPriceRepository.findById(paymentMethod.getUnitPriceId()).get());

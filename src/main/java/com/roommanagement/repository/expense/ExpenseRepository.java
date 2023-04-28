@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface ExpenseRepository extends JpaRepository<Expense, Integer> {
   List<Expense> findAllByDefaultFlagIsTrueAndUserId(Long userId);
+  List<Expense> findAllByDefaultFlagIsFalseAndUserId(Long userId);
 }

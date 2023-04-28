@@ -52,6 +52,13 @@ public class CommandRoomServiceImpl implements CommandRoomService {
     }
     List<Room> persistedRooms = roomRepository.saveAllAndFlush(rooms);
 
+    // Reset apply expense for all room for the expense isn't default expense in expense room
+    List<Expense> expensesWithoutDefault = expenseRepository.findAllByDefaultFlagIsFalseAndUserId(user.getId());
+    expensesWithoutDefault.forEach(i -> {
+      i.setApplyAllFlag(false);
+      expenseRepository.save(i);
+    });
+
     // Persist default expense for room
     List<RoomExpense> roomExpenses = new ArrayList<>();
     List<Expense> expenses = expenseRepository.findAllByDefaultFlagIsTrueAndUserId(user.getId());

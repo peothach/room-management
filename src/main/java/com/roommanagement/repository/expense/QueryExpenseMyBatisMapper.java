@@ -7,22 +7,23 @@ import java.util.List;
 
 @Mapper
 public interface QueryExpenseMyBatisMapper {
-  @Select("SELECT e.expense_id,\n" +
-      "       e.name expense_name,\n" +
-      "       e.price,\n" +
-      "       e.unit_price_flag,\n" +
-      "       e.apply_all_flag,\n" +
-      "       u.unit,\n" +
-      "       r.id as room_id,\n" +
-      "       r.name as room_name\n" +
-      "FROM expense e\n" +
-      "JOIN room_expense re ON e.expense_id = re.expense_id\n" +
-      "JOIN room r ON r.id = re.room_id\n" +
-      "LEFT JOIN unit_price u ON u.unit_price_id = e.unit_price_id\n" +
-      "JOIN users on users.id = e.user_id\n" +
-      "WHERE users.id = #{userId}\n" +
-      "AND r.status <> 'Phòng đã xóa'\n" +
-      "AND re.override_price_flag IS FALSE")
+  @Select("SELECT e.expense_id, \n" +
+      "             e.name expense_name, \n" +
+      "             e.price, \n" +
+      "             e.unit_price_flag, \n" +
+      "             e.apply_all_flag, \n" +
+      "             u.unit, \n" +
+      "             r.id as room_id, \n" +
+      "             r.name as room_name \n" +
+      "      FROM expense e \n" +
+      "      LEFT JOIN room_expense re ON e.expense_id = re.expense_id \n" +
+      "      LEFT JOIN room r ON r.id = re.room_id \n" +
+      "      LEFT JOIN unit_price u ON u.unit_price_id = e.unit_price_id \n" +
+      "      JOIN users on users.id = e.user_id \n" +
+      "      WHERE users.id = #{userId}\n" +
+      "      AND r.id IS NULL OR r.status <> 'Phòng đã xóa'\n" +
+      "      AND re.room_expense_id IS NULL OR re.override_price_flag IS FALSE\n" +
+      "      ORDER BY e.expense_id")
   @Results(id = "expensesResultMap", value = {
       @Result(property = "expenseId", column = "expense_id"),
       @Result(property = "expenseName", column = "expense_name"),
