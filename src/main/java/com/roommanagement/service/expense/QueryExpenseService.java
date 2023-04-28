@@ -1,11 +1,11 @@
 package com.roommanagement.service.expense;
 
 import com.roommanagement.dto.response.BaseResponseDto;
-import com.roommanagement.dto.response.expense.QueryExpenseResponse;
+import com.roommanagement.dto.response.expense.ExpenseResponse;
 
 import java.util.List;
 
 public interface QueryExpenseService {
-  BaseResponseDto<List<QueryExpenseResponse>> retrieveExpenses();
+  BaseResponseDto<List<ExpenseResponse>> retrieveExpenses();
   BaseResponseDto<?> retrieveParticularExpense(Integer expenseId);
 }

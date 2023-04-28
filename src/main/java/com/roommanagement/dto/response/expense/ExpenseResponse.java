@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class QueryExpenseResponse {
+public class ExpenseResponse {
   private Integer id;
   private String name;
   private Double price;

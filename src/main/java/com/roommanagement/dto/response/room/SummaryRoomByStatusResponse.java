@@ -19,7 +19,7 @@ public class SummaryRoomByStatusResponse {
     private int total;
 
     public RoomStatus getRoomStatus() {
-      if (StringUtils.isEmpty(this.status)) {
+      if (!StringUtils.hasText(this.status)) {
         return null;
       }
       return RoomStatus.fromValue(this.status);

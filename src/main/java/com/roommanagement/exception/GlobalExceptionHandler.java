@@ -14,6 +14,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
   @ExceptionHandler(value = Exception.class)
   public ResponseEntity<BaseResponseDto<?>> handleInternalException(Exception ex, WebRequest request) {
+    ex.printStackTrace();
     return ResponseEntity
         .status(HttpStatus.INTERNAL_SERVER_ERROR)
         .body(new BaseResponseDto<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase()));

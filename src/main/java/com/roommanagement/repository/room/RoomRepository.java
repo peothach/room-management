@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface RoomRepository extends JpaRepository<Room, Long> {
 //  @Query("SELECT COUNT(u) FROM User u WHERE u.role = :role")
-  long countByNameLike(String pattern);
+  long countByNameLikeAndUserId(String pattern, Long userId);
   List<Room> findAllByStatusIsNotAndUserId(RoomStatus status, Long userId);
 }

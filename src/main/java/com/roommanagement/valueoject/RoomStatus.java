@@ -5,25 +5,19 @@ import lombok.Data;
 import java.util.Arrays;
 
 public enum RoomStatus {
-  CurrentlyRenting("Đang cho thuê","C"),
-  SoonToBeReturn("Sắp trả","S"),
-  RoomAvailable("Phòng trống","R"),
-  Inactive("Phòng đã xóa","I");
+  CurrentlyRenting("Đang cho thuê"),
+  SoonToBeReturn("Sắp trả"),
+  RoomAvailable("Phòng trống"),
+  Inactive("Phòng đã xóa");
 
   private final String value;
-  private final String description;
 
-  RoomStatus(String value, String description) {
+  RoomStatus(String value) {
     this.value = value;
-    this.description = description;
   }
 
   public String getValue() {
     return value;
-  }
-
-  public String getDescription() {
-    return description;
   }
 
   public static RoomStatus fromValue(String value) {

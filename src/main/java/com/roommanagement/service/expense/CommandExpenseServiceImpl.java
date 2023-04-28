@@ -32,7 +32,6 @@ public class CommandExpenseServiceImpl implements CommandExpenseService {
   private final RoomExpenseRepository roomExpenseRepository;
   private final UnitPriceRepository unitPriceRepository;
   private final RoomRepository roomRepository;
-  private final UserRepository userRepository;
   private final UserUtils userUtils;
 
   @Override
@@ -42,8 +41,7 @@ public class CommandExpenseServiceImpl implements CommandExpenseService {
     ExpenseCreateRequest.PaymentMethod paymentMethod = createRequest.getPaymentMethod();
 
     // Get current User
-    UserDetailsImpl currentUser = userUtils.getCurrentUser().orElseThrow(RuntimeException::new);
-    User user = userRepository.findById(currentUser.getId()).orElseThrow(RuntimeException::new);
+    User user = userUtils.getCurrentUser().orElseThrow(RuntimeException::new);
 
     // Update expense table
     Expense expense = new Expense();
@@ -96,8 +94,7 @@ public class CommandExpenseServiceImpl implements CommandExpenseService {
     ExpenseUpdateRequest.PaymentMethod paymentMethod = updateRequest.getPaymentMethod();
 
     // Get current User
-    UserDetailsImpl currentUser = userUtils.getCurrentUser().orElseThrow(RuntimeException::new);
-    User user = userRepository.findById(currentUser.getId()).orElseThrow(RuntimeException::new);
+    User user = userUtils.getCurrentUser().orElseThrow(RuntimeException::new);
 
     // Update expense table
     Expense expense = expenseRepository.findById(expenseId).orElseThrow(RuntimeException::new);
@@ -167,8 +164,6 @@ public class CommandExpenseServiceImpl implements CommandExpenseService {
       }
       roomExpenseRepository.deleteAll(roomExpensesNeedRemove);
     }
-
-//    roomExpenseRepository.saveAll(roomExpenses);
 
     return new BaseResponseDto<>(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase());
   }

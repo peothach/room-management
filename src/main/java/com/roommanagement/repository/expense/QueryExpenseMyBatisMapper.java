@@ -1,6 +1,6 @@
 package com.roommanagement.repository.expense;
 
-import com.roommanagement.dto.response.expense.QueryExpenseResponse;
+import com.roommanagement.dto.response.expense.ExpenseResponse;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -20,7 +20,8 @@ public interface QueryExpenseMyBatisMapper {
       "JOIN room r ON r.id = re.room_id\n" +
       "LEFT JOIN unit_price u ON u.unit_price_id = e.unit_price_id\n" +
       "JOIN users on users.id = e.user_id\n" +
-      "WHERE users.id = #{userId}")
+      "WHERE users.id = #{userId}\n" +
+      "AND r.status <> 'Phòng đã xóa'")
   @Results(id = "expensesResultMap", value = {
       @Result(property = "expenseId", column = "expense_id"),
       @Result(property = "expenseName", column = "expense_name"),
@@ -31,7 +32,7 @@ public interface QueryExpenseMyBatisMapper {
       @Result(property = "roomName", column = "room_name"),
       @Result(property = "isApplyAll", column = "apply_all_flag")
   })
-  List<QueryExpenseResponse.QueryExpense> retrieveExpense(@Param("userId") Long userId);
+  List<ExpenseResponse.QueryExpense> retrieveExpense(@Param("userId") Long userId);
 
   @Select("SELECT e.expense_id,\n" +
       "       e.name expense_name,\n" +
@@ -46,7 +47,9 @@ public interface QueryExpenseMyBatisMapper {
       "JOIN room r ON r.id = re.room_id\n" +
       "LEFT JOIN unit_price u ON u.unit_price_id = e.unit_price_id\n" +
       "JOIN users on users.id = e.user_id\n" +
-      "WHERE users.id = #{userId} AND e.expense_id = #{expenseId}" )
+      "WHERE users.id = #{userId}\n" +
+      "AND e.expense_id = #{expenseId}\n" +
+      "AND r.status <> 'Phòng đã xóa'" )
   @Results(id = "particularExpenseResultMap", value = {
       @Result(property = "expenseId", column = "expense_id"),
       @Result(property = "expenseName", column = "expense_name"),
@@ -57,5 +60,5 @@ public interface QueryExpenseMyBatisMapper {
       @Result(property = "roomName", column = "room_name"),
       @Result(property = "isApplyAll", column = "apply_all_flag")
   })
-  List<QueryExpenseResponse.QueryExpense> retrieveParticularExpense(@Param("userId") Long userId, @Param("expenseId") Integer expenseId);
+  List<ExpenseResponse.QueryExpense> retrieveParticularExpense(@Param("userId") Long userId, @Param("expenseId") Integer expenseId);
 }

@@ -1,8 +1,10 @@
 package com.roommanagement.repository.room;
 
 import com.roommanagement.dto.response.BaseResponseDto;
+import com.roommanagement.dto.response.expense.ExpenseResponse;
 import com.roommanagement.dto.response.room.RoomResponse;
 import com.roommanagement.dto.response.room.SummaryRoomByStatusResponse;
+import com.roommanagement.entity.User;
 import com.roommanagement.security.services.UserDetailsImpl;
 import com.roommanagement.service.room.QueryRoomService;
 import com.roommanagement.util.UserUtils;
@@ -23,29 +25,37 @@ public class QueryRoomServiceImpl implements QueryRoomService {
 
   @Override
   public BaseResponseDto<SummaryRoomByStatusResponse> getTotalRoomByStatus() {
-    UserDetailsImpl userDetails = userUtils.getCurrentUser().orElseThrow(RuntimeException::new);
+    User user = userUtils.getCurrentUser().orElseThrow(RuntimeException::new);
     return new BaseResponseDto<>(HttpStatus.OK.value(),
         HttpStatus.OK.getReasonPhrase(),
-        combineSummaryRoom(queryRoomMybatisMapper.getTotalRoomByStatus(userDetails.getId()))
+        combineSummaryRoom(queryRoomMybatisMapper.getTotalRoomByStatus(user.getId()))
     );
   }
 
   @Override
   public BaseResponseDto<List<RoomResponse>> getRooms() {
-    UserDetailsImpl userDetails = userUtils.getCurrentUser().orElseThrow(RuntimeException::new);
+    User user = userUtils.getCurrentUser().orElseThrow(RuntimeException::new);
     return new BaseResponseDto<>(HttpStatus.OK.value(),
         HttpStatus.OK.getReasonPhrase(),
-        queryRoomMybatisMapper.retrieveRooms(userDetails.getId())
+        queryRoomMybatisMapper.retrieveRooms(user.getId())
     );
   }
 
   @Override
   public BaseResponseDto<List<RoomResponse>> getRooms(String status) {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+    User user = userUtils.getCurrentUser().orElseThrow(RuntimeException::new);
     return new BaseResponseDto<>(HttpStatus.OK.value(),
         HttpStatus.OK.getReasonPhrase(),
-        queryRoomMybatisMapper.retrieveRoomsByStatus(userDetails.getId(), status)
+        queryRoomMybatisMapper.retrieveRoomsByStatus(user.getId(), status)
+    );
+  }
+
+  @Override
+  public BaseResponseDto<List<ExpenseResponse>> getExpensesByRoom(Integer roomId) {
+    User user = userUtils.getCurrentUser().orElseThrow(RuntimeException::new);
+    return new BaseResponseDto<>(HttpStatus.OK.value(),
+        HttpStatus.OK.getReasonPhrase(),
+        queryRoomMybatisMapper.findExpenseByRoomId(user.getId(), roomId)
     );
   }
 
