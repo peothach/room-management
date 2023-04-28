@@ -31,6 +31,14 @@ public class RoomCommandController {
     );
   }
 
+  @PatchMapping("/rooms/{id}/rollback")
+  public ResponseEntity<BaseResponseDto<?>> rollbackRoom(@PathVariable("id") long roomId) {
+    commandRoomService.rollbackRoom(roomId);
+    return ResponseEntity.ok(
+        new BaseResponseDto<>(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase())
+    );
+  }
+
   @DeleteMapping("/rooms/{id}")
   public ResponseEntity<BaseResponseDto<?>> deleteRoom(@PathVariable("id") long id) {
     commandRoomService.deleteRoom(id);

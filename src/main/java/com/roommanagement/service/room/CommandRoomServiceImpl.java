@@ -85,6 +85,14 @@ public class CommandRoomServiceImpl implements CommandRoomService {
     roomRepository.save(room);
   }
 
+  @Override
+  public void rollbackRoom(long roomId) {
+    // Change status room in room table
+    Room room = roomRepository.findById(roomId).orElseThrow(RuntimeException::new);
+    room.setStatus(RoomStatus.RoomAvailable);
+    roomRepository.save(room);
+  }
+
   private void removeRoomExpenseRecord(RoomExpense roomExpense) {
     roomExpenseRepository.delete(roomExpense);
   }

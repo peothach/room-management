@@ -7,4 +7,5 @@ public interface CommandRoomService {
   void updateRoom(CreateRoomRequestDto roomRequestDto, long roomId);
 
   void deleteRoom(long roomId);
+  void rollbackRoom(long roomId);
 }
