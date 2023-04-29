@@ -78,7 +78,7 @@ public class CommandRoomServiceImpl implements CommandRoomService {
   public void updateRoom(CreateRoomRequestDto roomRequestDto, long roomId) {
     Room room = roomRepository.findById(roomId).orElseThrow(RuntimeException::new);
     room.setName(roomRequestDto.getName());
-    room.setStatus(RoomStatus.valueOf(roomRequestDto.getStatus()));
+    room.setStatus(RoomStatus.fromValue(roomRequestDto.getStatus()));
     roomRepository.save(room);
   }
 

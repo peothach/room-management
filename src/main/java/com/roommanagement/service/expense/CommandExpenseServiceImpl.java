@@ -11,8 +11,6 @@ import com.roommanagement.repository.expense.ExpenseRepository;
 import com.roommanagement.repository.room.RoomRepository;
 import com.roommanagement.repository.roomexpense.RoomExpenseRepository;
 import com.roommanagement.repository.unitprice.UnitPriceRepository;
-import com.roommanagement.repository.user.UserRepository;
-import com.roommanagement.security.services.UserDetailsImpl;
 import com.roommanagement.util.UserUtils;
 import com.roommanagement.valueoject.RoomStatus;
 import lombok.RequiredArgsConstructor;
@@ -104,7 +102,9 @@ public class CommandExpenseServiceImpl implements CommandExpenseService {
     expense.setUnitPriceFlag(false);
     expense.setUser(user);
     expense.setApplyAllFlag(false);
-    expense.setDefaultFlag(false);
+    if (!expense.getDefaultFlag()) {
+      expense.setDefaultFlag(false);
+    }
     if (paymentMethod.getIsUnitPrice()) {
       expense.setUnitPriceFlag(true);
       expense.setUnitPrice(unitPriceRepository.findById(paymentMethod.getUnitPriceId()).get());
@@ -156,7 +156,7 @@ public class CommandExpenseServiceImpl implements CommandExpenseService {
 
       // Delete room record in room_expense when user un-select existing record
       List<RoomExpense> roomExpensesNeedRemove = roomExpenseRepository.findAllByExpenseId(expenseId);
-      List<Long> roomsForUpdate =  updateRequest.getRoomIds();
+      List<Long> roomsForUpdate = updateRequest.getRoomIds();
       for (int i = 0; i < roomExpensesNeedRemove.size(); i++) {
         for (int j = 0; j < roomsForUpdate.size(); j++) {
           if (Objects.equals(roomExpensesNeedRemove.get(i).getRoom().getId(), roomsForUpdate.get(j))) {
