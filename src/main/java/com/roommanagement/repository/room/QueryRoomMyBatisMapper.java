@@ -14,12 +14,26 @@ public interface QueryRoomMyBatisMapper {
       "                  JOIN users u ON r.user_id = u.user_id \n" +
       "                  WHERE r.user_id = #{userId} AND r.status <> 'Phòng đã xóa' \n" +
       "                  GROUP BY r.status")
+  @Results(id = "getTotalRoomByStatusResultMap", value = {
+      @Result(property = "status", column = "status"),
+      @Result(property = "total", column = "total")
+  })
   List<SummaryRoomByStatusResponse.SummaryRoomByStatusQuery> getTotalRoomByStatus(@Param("userId") Integer userId);
 
   @Select("SELECT room_id, name, status FROM room WHERE user_id = #{userId} and status <> 'Phòng đã xóa' ORDER BY room_id")
+  @Results(id = "retrieveRoomsResultMap", value = {
+      @Result(property = "id", column = "room_id"),
+      @Result(property = "name", column = "name"),
+      @Result(property = "status", column = "status")
+  })
   List<RoomResponse> retrieveRooms(@Param("userId") Integer userId);
 
   @Select("SELECT room_id, name, status FROM room WHERE user_id = #{userId} and status = #{status} ORDER BY room_id")
+  @Results(id = "retrieveRoomsResultMap", value = {
+      @Result(property = "id", column = "room_id"),
+      @Result(property = "name", column = "name"),
+      @Result(property = "status", column = "status")
+  })
   List<RoomResponse> retrieveRoomsByStatus(@Param("userId") Integer userId, @Param("status") String status);
 
   @Select("SELECT e.expense_id,  \n" +
