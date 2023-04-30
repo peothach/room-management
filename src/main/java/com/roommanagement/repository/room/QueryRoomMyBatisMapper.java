@@ -9,38 +9,38 @@ import java.util.List;
 
 @Mapper
 public interface QueryRoomMyBatisMapper {
-  @Select("SELECT r.status, COUNT(*) AS total\n" +
-      "            FROM room r\n" +
-      "            JOIN users u ON r.user_id = u.id\n" +
-      "            WHERE r.user_id = #{userId} AND r.status <> 'Phòng đã xóa'\n" +
-      "            GROUP BY r.status")
+  @Select("SELECT r.status, COUNT(*) AS total \n" +
+      "                  FROM room r \n" +
+      "                  JOIN users u ON r.user_id = u.user_id \n" +
+      "                  WHERE r.user_id = #{userId} AND r.status <> 'Phòng đã xóa' \n" +
+      "                  GROUP BY r.status")
   List<SummaryRoomByStatusResponse.SummaryRoomByStatusQuery> getTotalRoomByStatus(@Param("userId") Integer userId);
 
-  @Select("SELECT id, name, status FROM room WHERE user_id = #{userId} and status <> 'Phòng đã xóa' ORDER BY id")
+  @Select("SELECT room_id, name, status FROM room WHERE user_id = #{userId} and status <> 'Phòng đã xóa' ORDER BY room_id")
   List<RoomResponse> retrieveRooms(@Param("userId") Integer userId);
 
-  @Select("SELECT id, name, status FROM room WHERE user_id = #{userId} and status = #{status} ORDER BY id")
+  @Select("SELECT room_id, name, status FROM room WHERE user_id = #{userId} and status = #{status} ORDER BY room_id")
   List<RoomResponse> retrieveRoomsByStatus(@Param("userId") Integer userId, @Param("status") String status);
 
-  @Select("SELECT e.expense_id, \n" +
-      "             e.name expense_name,\n" +
-      "             CASE \n" +
-      "             \tWHEN re.override_price_flag IS TRUE THEN re.price\n" +
-      "             \tELSE e.price\n" +
-      "             END as price,\n" +
-      "             e.unit_price_flag, \n" +
-      "             e.apply_all_flag, \n" +
-      "             u.unit, \n" +
-      "             r.id as room_id, \n" +
-      "             r.name as room_name \n" +
-      "      FROM expense e \n" +
-      "      JOIN room_expense re ON e.expense_id = re.expense_id \n" +
-      "      JOIN room r ON r.id = re.room_id \n" +
-      "      LEFT JOIN unit_price u ON u.unit_price_id = e.unit_price_id \n" +
-      "      JOIN users on users.id = e.user_id" +
-      "      WHERE users.id = #{userId}\n" +
-      "      AND r.id = #{roomId}\n" +
-      "      AND r.status <> 'Phòng đã xóa'")
+  @Select("SELECT e.expense_id,  \n" +
+      "                   e.name expense_name, \n" +
+      "                   CASE  \n" +
+      "                   WHEN re.override_price_flag IS TRUE THEN re.price \n" +
+      "                   ELSE e.price \n" +
+      "                   END as price, \n" +
+      "                   e.unit_price_flag,  \n" +
+      "                   e.apply_all_flag,  \n" +
+      "                   u.unit,  \n" +
+      "                   r.room_id as room_id,  \n" +
+      "                   r.name as room_name  \n" +
+      "            FROM expense e  \n" +
+      "            JOIN room_expense re ON e.expense_id = re.expense_id  \n" +
+      "            JOIN room r ON r.room_id = re.room_id  \n" +
+      "            LEFT JOIN unit_price u ON u.unit_price_id = e.unit_price_id  \n" +
+      "            JOIN users on users.user_id = e.user_id \n" +
+      "            WHERE users.user_id = #{userId} \n" +
+      "            AND r.room_id = #{roomId} \n" +
+      "            AND r.status <> 'Phòng đã xóa'")
   @Results(id = "expensesResultMap", value = {
       @Result(property = "id", column = "expense_id"),
       @Result(property = "name", column = "expense_name"),
