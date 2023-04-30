@@ -29,7 +29,7 @@ public interface QueryRoomMyBatisMapper {
   List<RoomResponse> retrieveRooms(@Param("userId") Integer userId);
 
   @Select("SELECT room_id, name, status FROM room WHERE user_id = #{userId} and status = #{status} ORDER BY room_id")
-  @Results(id = "retrieveRoomsResultMap", value = {
+  @Results(id = "retrieveRoomsByStatusResultMap", value = {
       @Result(property = "id", column = "room_id"),
       @Result(property = "name", column = "name"),
       @Result(property = "status", column = "status")
