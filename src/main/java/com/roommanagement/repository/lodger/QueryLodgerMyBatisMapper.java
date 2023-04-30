@@ -14,7 +14,7 @@ public interface QueryLodgerMyBatisMapper {
       "       l.phone_number\n" +
       "FROM room r\n" +
       "JOIN lodger l ON r.room_id = l.room_id\n" +
-      "WHERE r.user_id = #{userId} AND r.room_id = #{roomId} AND l.active IS TRUE")
+      "WHERE r.user_id = #{userId} AND r.room_id = #{roomId} AND l.active IS TRUE ORDER BY l.lodger_id")
   @Results(id = "lodgersResultMap", value = {
       @Result(property = "id", column = "lodger_id"),
       @Result(property = "name", column = "name"),
