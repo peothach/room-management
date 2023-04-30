@@ -2,8 +2,10 @@ package com.roommanagement.controllers.room;
 
 import com.roommanagement.dto.response.BaseResponseDto;
 import com.roommanagement.dto.response.expense.ExpenseResponse;
+import com.roommanagement.dto.response.lodger.LodgerResponse;
 import com.roommanagement.dto.response.room.RoomResponse;
 import com.roommanagement.dto.response.room.SummaryRoomByStatusResponse;
+import com.roommanagement.service.lodger.QueryLodgerService;
 import com.roommanagement.service.room.QueryRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

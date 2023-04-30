@@ -24,13 +24,12 @@ import static java.util.stream.Collectors.toList;
 public class QueryExpenseServiceImpl implements QueryExpenseService {
   private final QueryExpenseMyBatisMapper query;
   private final UserUtils userUtils;
+
   @Override
   public BaseResponseDto<List<ExpenseResponse>> retrieveExpenses() {
     User user = userUtils.getCurrentUser().orElseThrow(RuntimeException::new);
     List<ExpenseResponse.QueryExpense> queryExpenses = query.retrieveExpense(user.getId());
-    LinkedHashMap<Integer, List<ExpenseResponse.QueryExpense>> expenseQueryPerIds = queryExpenses
-        .stream()
-        .collect(groupingBy(ExpenseResponse.QueryExpense::getExpenseId, LinkedHashMap::new, toList()));
+    LinkedHashMap<Integer, List<ExpenseResponse.QueryExpense>> expenseQueryPerIds = queryExpenses.stream().collect(groupingBy(ExpenseResponse.QueryExpense::getExpenseId, LinkedHashMap::new, toList()));
 
     List<ExpenseResponse> expenses = new ArrayList<>();
 

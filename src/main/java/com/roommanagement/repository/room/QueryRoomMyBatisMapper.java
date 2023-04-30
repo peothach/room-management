@@ -14,13 +14,13 @@ public interface QueryRoomMyBatisMapper {
       "            JOIN users u ON r.user_id = u.id\n" +
       "            WHERE r.user_id = #{userId} AND r.status <> 'Phòng đã xóa'\n" +
       "            GROUP BY r.status")
-  List<SummaryRoomByStatusResponse.SummaryRoomByStatusQuery> getTotalRoomByStatus(@Param("userId") Long userId);
+  List<SummaryRoomByStatusResponse.SummaryRoomByStatusQuery> getTotalRoomByStatus(@Param("userId") Integer userId);
 
   @Select("SELECT id, name, status FROM room WHERE user_id = #{userId} and status <> 'Phòng đã xóa' ORDER BY id")
-  List<RoomResponse> retrieveRooms(@Param("userId") Long userId);
+  List<RoomResponse> retrieveRooms(@Param("userId") Integer userId);
 
   @Select("SELECT id, name, status FROM room WHERE user_id = #{userId} and status = #{status} ORDER BY id")
-  List<RoomResponse> retrieveRoomsByStatus(@Param("userId") Long userId, @Param("status") String status);
+  List<RoomResponse> retrieveRoomsByStatus(@Param("userId") Integer userId, @Param("status") String status);
 
   @Select("SELECT e.expense_id, \n" +
       "             e.name expense_name,\n" +
@@ -48,5 +48,5 @@ public interface QueryRoomMyBatisMapper {
       @Result(property = "unitPriceFlag", column = "unit_price_flag"),
       @Result(property = "unit", column = "unit")
   })
-  List<ExpenseResponse> findExpenseByRoomId(@Param("userId") Long userId, @Param("roomId") Integer roomId);
+  List<ExpenseResponse> findExpenseByRoomId(@Param("userId") Integer userId, @Param("roomId") Integer roomId);
 }

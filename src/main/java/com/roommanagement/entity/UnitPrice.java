@@ -1,15 +1,13 @@
 package com.roommanagement.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
 @Table(name = "unit_price")
-@NoArgsConstructor
 public class UnitPrice {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +17,6 @@ public class UnitPrice {
   @Column(name = "unit")
   private String unit;
 
-  public UnitPrice(String unit) {
-    this.unit = unit;
-  }
+  @OneToMany(mappedBy = "unitPrice")
+  private List<Expense> expenses;
 }

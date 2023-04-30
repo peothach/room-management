@@ -25,7 +25,8 @@ import javax.validation.constraints.Size;
 public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	@Column(name = "user_id")
+	private Integer id;
 	@NotBlank
 	@Size(max = 20)
 	private String username;

@@ -102,7 +102,7 @@ public class CommandExpenseServiceImpl implements CommandExpenseService {
     expense.setUnitPriceFlag(false);
     expense.setUser(user);
     expense.setApplyAllFlag(false);
-    if (!expense.getDefaultFlag()) {
+    if (!expense.isDefaultFlag()) {
       expense.setDefaultFlag(false);
     }
     if (paymentMethod.getIsUnitPrice()) {
@@ -156,7 +156,7 @@ public class CommandExpenseServiceImpl implements CommandExpenseService {
 
       // Delete room record in room_expense when user un-select existing record
       List<RoomExpense> roomExpensesNeedRemove = roomExpenseRepository.findAllByExpenseId(expenseId);
-      List<Long> roomsForUpdate = updateRequest.getRoomIds();
+      List<Integer> roomsForUpdate = updateRequest.getRoomIds();
       for (int i = 0; i < roomExpensesNeedRemove.size(); i++) {
         for (int j = 0; j < roomsForUpdate.size(); j++) {
           if (Objects.equals(roomExpensesNeedRemove.get(i).getRoom().getId(), roomsForUpdate.get(j))) {

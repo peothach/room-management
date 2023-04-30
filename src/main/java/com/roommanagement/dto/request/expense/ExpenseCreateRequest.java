@@ -8,7 +8,7 @@ import java.util.List;
 public class ExpenseCreateRequest {
   private String name;
   private PaymentMethod paymentMethod;
-  private List<Long> roomIds;
+  private List<Integer> roomIds;
   private boolean applyAllRooms;
 
   @Data

@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface RoomRepository extends JpaRepository<Room, Long> {
+public interface RoomRepository extends JpaRepository<Room, Integer> {
 //  @Query("SELECT COUNT(u) FROM User u WHERE u.role = :role")
-  long countByNameLikeAndUserId(String pattern, Long userId);
-  List<Room> findAllByStatusIsNotAndUserId(RoomStatus status, Long userId);
+  long countByNameLikeAndUserId(String pattern, Integer userId);
+  List<Room> findAllByStatusIsNotAndUserId(RoomStatus status, Integer userId);
 }

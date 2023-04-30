@@ -9,5 +9,5 @@ import java.util.Optional;
 
 public interface RoomExpenseRepository extends JpaRepository<RoomExpense, Integer> {
   List<RoomExpense> findAllByExpenseId(Integer expenseId);
-  Optional<RoomExpense> findByRoomIdAndExpenseId(Long roomId, Integer expenseId);
+  Optional<RoomExpense> findByRoomIdAndExpenseId(Integer roomId, Integer expenseId);
 }

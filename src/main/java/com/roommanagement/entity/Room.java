@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -15,7 +16,8 @@ import javax.persistence.*;
 public class Room {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @Column(name = "room_id")
+  private Integer id;
   @ManyToOne
   @JoinColumn(name = "user_id")
   private User user;
@@ -25,4 +27,6 @@ public class Room {
   private String description;
   @Column
   private String name;
+  @OneToMany(mappedBy = "room")
+  private List<Lodger> lodgers;
 }

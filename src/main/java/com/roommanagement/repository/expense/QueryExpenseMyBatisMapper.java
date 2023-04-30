@@ -34,7 +34,7 @@ public interface QueryExpenseMyBatisMapper {
       @Result(property = "roomName", column = "room_name"),
       @Result(property = "isApplyAll", column = "apply_all_flag")
   })
-  List<ExpenseResponse.QueryExpense> retrieveExpense(@Param("userId") Long userId);
+  List<ExpenseResponse.QueryExpense> retrieveExpense(@Param("userId") Integer userId);
 
   @Select("SELECT e.expense_id,\n" +
       "       e.name expense_name,\n" +
@@ -62,5 +62,5 @@ public interface QueryExpenseMyBatisMapper {
       @Result(property = "roomName", column = "room_name"),
       @Result(property = "isApplyAll", column = "apply_all_flag")
   })
-  List<ExpenseResponse.QueryExpense> retrieveParticularExpense(@Param("userId") Long userId, @Param("expenseId") Integer expenseId);
+  List<ExpenseResponse.QueryExpense> retrieveParticularExpense(@Param("userId") Integer userId, @Param("expenseId") Integer expenseId);
 }

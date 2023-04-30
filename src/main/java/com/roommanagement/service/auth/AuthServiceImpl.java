@@ -113,7 +113,7 @@ public class AuthServiceImpl implements AuthService {
   @Override
   public void logoutUser() {
     UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    Long userId = userDetails.getId();
+    Integer userId = userDetails.getId();
     refreshTokenService.deleteByUserId(userId);
   }
 

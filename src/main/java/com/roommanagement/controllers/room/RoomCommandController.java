@@ -25,7 +25,7 @@ public class RoomCommandController {
   }
 
   @PatchMapping("/rooms/{id}")
-  public ResponseEntity<BaseResponseDto<?>> updateRoom(@RequestBody CreateRoomRequestDto roomRequestDto, @PathVariable("id") long roomId) {
+  public ResponseEntity<BaseResponseDto<?>> updateRoom(@RequestBody CreateRoomRequestDto roomRequestDto, @PathVariable("id") Integer roomId) {
     commandRoomService.updateRoom(roomRequestDto, roomId);
     return ResponseEntity.ok(
         new BaseResponseDto<>(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase())
@@ -33,7 +33,7 @@ public class RoomCommandController {
   }
 
   @PatchMapping("/rooms/{id}/rollback")
-  public ResponseEntity<BaseResponseDto<?>> rollbackRoom(@PathVariable("id") long roomId) {
+  public ResponseEntity<BaseResponseDto<?>> rollbackRoom(@PathVariable("id") Integer roomId) {
     commandRoomService.rollbackRoom(roomId);
     return ResponseEntity.ok(
         new BaseResponseDto<>(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase())
@@ -41,7 +41,7 @@ public class RoomCommandController {
   }
 
   @DeleteMapping("/rooms/{id}")
-  public ResponseEntity<BaseResponseDto<?>> deleteRoom(@PathVariable("id") long id) {
+  public ResponseEntity<BaseResponseDto<?>> deleteRoom(@PathVariable("id") Integer id) {
     commandRoomService.deleteRoom(id);
     return ResponseEntity.ok(
         new BaseResponseDto<>(HttpStatus.NO_CONTENT.value(), HttpStatus.NO_CONTENT.getReasonPhrase())
@@ -50,7 +50,7 @@ public class RoomCommandController {
 
   @PatchMapping("/rooms/{roomId}/expenses/{expenseId}")
   public ResponseEntity<BaseResponseDto<?>> updateExpense(
-      @PathVariable("roomId") Long roomId,
+      @PathVariable("roomId") Integer roomId,
       @PathVariable("expenseId") Integer expenseId,
       @RequestBody UpdateExpenseRequest updateExpenseRequest
       ) {

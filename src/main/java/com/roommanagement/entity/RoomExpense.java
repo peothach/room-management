@@ -7,13 +7,13 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "room_expense", uniqueConstraints = {
-    @UniqueConstraint(columnNames = { "room_id", "expense_id" })}
+    @UniqueConstraint(columnNames = {"room_id", "expense_id"})}
 )
 public class RoomExpense {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "room_expense_id")
-  private Long id;
+  private Integer id;
 
   @ManyToOne
   @JoinColumn(name = "expense_id")

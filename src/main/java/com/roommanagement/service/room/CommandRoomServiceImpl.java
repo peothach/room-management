@@ -75,7 +75,7 @@ public class CommandRoomServiceImpl implements CommandRoomService {
   }
 
   @Override
-  public void updateRoom(CreateRoomRequestDto roomRequestDto, long roomId) {
+  public void updateRoom(CreateRoomRequestDto roomRequestDto, Integer roomId) {
     Room room = roomRepository.findById(roomId).orElseThrow(RuntimeException::new);
     room.setName(roomRequestDto.getName());
     room.setStatus(RoomStatus.fromValue(roomRequestDto.getStatus()));
@@ -83,7 +83,7 @@ public class CommandRoomServiceImpl implements CommandRoomService {
   }
 
   @Override
-  public void deleteRoom(long roomId) {
+  public void deleteRoom(Integer roomId) {
     // Change status room in room table
     Room room = roomRepository.findById(roomId).orElseThrow(RuntimeException::new);
     room.setStatus(RoomStatus.Inactive);
@@ -91,7 +91,7 @@ public class CommandRoomServiceImpl implements CommandRoomService {
   }
 
   @Override
-  public void rollbackRoom(long roomId) {
+  public void rollbackRoom(Integer roomId) {
     // Change status room in room table
     Room room = roomRepository.findById(roomId).orElseThrow(RuntimeException::new);
     room.setStatus(RoomStatus.RoomAvailable);
@@ -99,7 +99,7 @@ public class CommandRoomServiceImpl implements CommandRoomService {
   }
 
   @Override
-  public void updateExpense(Long roomId, Integer expenseId, UpdateExpenseRequest updateExpenseRequest) {
+  public void updateExpense(Integer roomId, Integer expenseId, UpdateExpenseRequest updateExpenseRequest) {
     // Check whether is the same price
     Expense expense = expenseRepository.findById(expenseId).orElseThrow(RuntimeException::new);
     if (Objects.equals(expense.getPrice(), updateExpenseRequest.getPrice())) return;
