@@ -6,6 +6,6 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum BucketName {
-  CMND_IMAGE("cmnd-room-mangement");
+  CMND_IMAGE("room-management-image");
   private final String bucketName;
 }
