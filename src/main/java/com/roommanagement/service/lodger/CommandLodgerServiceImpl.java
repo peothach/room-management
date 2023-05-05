@@ -1,6 +1,5 @@
 package com.roommanagement.service.lodger;
 
-import com.roommanagement.configuration.BucketName;
 import com.roommanagement.dto.request.lodger.LodgerRequest;
 import com.roommanagement.dto.response.BaseResponseDto;
 import com.roommanagement.entity.Image;
@@ -9,7 +8,7 @@ import com.roommanagement.entity.Room;
 import com.roommanagement.repository.image.ImageRepository;
 import com.roommanagement.repository.lodger.LodgerRepository;
 import com.roommanagement.repository.room.RoomRepository;
-import com.roommanagement.service.s3.FileStore;
+import com.roommanagement.service.azure.StorageService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -18,8 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 import static org.apache.http.entity.ContentType.*;
@@ -30,7 +27,7 @@ public class CommandLodgerServiceImpl implements CommandLodgerService {
   private final ImageRepository imageRepository;
   private final LodgerRepository lodgerRepository;
   private final RoomRepository roomRepository;
-  private final FileStore fileStore;
+  private final StorageService storageService;
   private final ModelMapper mapper;
 
   @Override
@@ -39,7 +36,6 @@ public class CommandLodgerServiceImpl implements CommandLodgerService {
     Lodger lodger = mapper.map(lodgerRequest, Lodger.class);
     lodger.setActive(true);
     lodger.setRoom(room);
-
     Lodger persistedLodger = lodgerRepository.saveAndFlush(lodger);
 
     storeImage(lodgerRequest.getFront(), "front", persistedLodger);
@@ -88,27 +84,19 @@ public class CommandLodgerServiceImpl implements CommandLodgerService {
         IMAGE_JPEG.getMimeType()).contains(file.getContentType())) {
       throw new IllegalStateException("FIle uploaded is not an image");
     }
-    //get file metadata
-    Map<String, String> metadata = new HashMap<>();
-    metadata.put("Content-Type", file.getContentType());
-    metadata.put("Content-Length", String.valueOf(file.getSize()));
-    //Save Image in S3 and then save
-    String path = String.format("%s/%s", BucketName.CMND_IMAGE.getBucketName(), "static");
-    String fileName = String.format("%s", file.getOriginalFilename());
+    //Upload image in Azure Blob Storage and then save
     try {
-      fileStore.upload(path, fileName, Optional.of(metadata), file.getInputStream());
+      String url = storageService.uploadImage(file.getInputStream(), file.getOriginalFilename(), file.getSize());
+      Image image = Image.builder()
+          .title(title)
+          .imageFileName(file.getOriginalFilename())
+          .lodger(lodger)
+          .url(url)
+          .build();
+      imageRepository.save(image);
     } catch (IOException e) {
       throw new IllegalStateException("Failed to upload file", e);
     }
-    Image image = Image.builder()
-        .description("")
-        .title(title)
-        .imagePath(path)
-        .imageFileName(fileName)
-        .lodger(lodger)
-        .url("https://cmnd-room-mangement.s3.ap-southeast-1.amazonaws.com/".concat("static/").concat(fileName))
-        .build();
-    imageRepository.save(image);
   }
 
   private void storeImage(MultipartFile file, Image image) {
@@ -123,21 +111,15 @@ public class CommandLodgerServiceImpl implements CommandLodgerService {
         IMAGE_JPEG.getMimeType()).contains(file.getContentType())) {
       throw new IllegalStateException("FIle uploaded is not an image");
     }
-    //get file metadata
-    Map<String, String> metadata = new HashMap<>();
-    metadata.put("Content-Type", file.getContentType());
-    metadata.put("Content-Length", String.valueOf(file.getSize()));
-    //Save Image in S3 and then save
-    String path = String.format("%s/%s", BucketName.CMND_IMAGE.getBucketName(), "static");
-    String fileName = String.format("%s", file.getOriginalFilename());
+
+    //Upload image in Azure Blob Storage and then save
     try {
-      fileStore.upload(path, fileName, Optional.of(metadata), file.getInputStream());
+      String url = storageService.uploadImage(file.getInputStream(), file.getOriginalFilename(), file.getSize());
+      image.setImageFileName(file.getOriginalFilename());
+      image.setUrl(url);
+      imageRepository.save(image);
     } catch (IOException e) {
       throw new IllegalStateException("Failed to upload file", e);
     }
-
-    image.setImageFileName(fileName);
-    image.setUrl("https://cmnd-room-mangement.s3.ap-southeast-1.amazonaws.com/".concat("static/").concat(fileName));
-    imageRepository.save(image);
   }
 }
