@@ -46,6 +46,10 @@ public class CommandLodgerServiceImpl implements CommandLodgerService {
   @Override
   public BaseResponseDto<?> update(Integer lodgerId, LodgerRequest lodgerRequest) {
     Lodger lodger = lodgerRepository.findById(lodgerId).orElseThrow(RuntimeException::new);
+    lodger.setName(lodgerRequest.getName());
+    lodger.setEmail(lodgerRequest.getEmail());
+    lodger.setPhoneNumber(lodgerRequest.getPhoneNumber());
+
     Optional<Image> imageFront = imageRepository.findByLodgerIdAndTitle(lodgerId, "front");
     Optional<Image> imageBack = imageRepository.findByLodgerIdAndTitle(lodgerId, "back");
     if (imageFront.isEmpty()) {
