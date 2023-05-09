@@ -30,7 +30,7 @@ public interface QueryBillDetailMyBatisMapper {
       "  bill_detail bd \n" +
       "  join expense e on bd.expense_id = e.expense_id \n" +
       "  JOIN room r on r.room_id = bd.room_id \n" +
-      "  LEFT join unit_price up on up.unit_price_id = e.expense_id\n" +
+      "  LEFT join unit_price up on up.unit_price_id = e.unit_price_id\n" +
       "WHERE \n" +
       "  r.room_id = #{roomId} \n" +
       "  AND MONTH(bd.create_date) = #{month} \n" +
